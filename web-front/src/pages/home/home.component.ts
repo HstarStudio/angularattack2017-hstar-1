@@ -1,5 +1,5 @@
 require('./home.styl');
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { UtilService } from './../../services';
 
@@ -10,6 +10,10 @@ import { UtilService } from './../../services';
 export class HomeComponent implements OnInit {
 
   private dragEvents: Array<any> = [];
+  private subs: Subscription[] = [];
+  private editorValue: string = 'var i = 1;';
+  private editorMode: string = 'javascript';
+  private editorHeight: number = 100;
 
   constructor(
     private elementRef: ElementRef,
@@ -18,12 +22,28 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.initDragEvents();
+    this._initSubscriptions();
+    this._setEditorHeight();
   }
 
   ngOnDestroy() {
     this.dragEvents.forEach(item => item.destroy());
+    this.subs.forEach((sub: Subscription) => sub.unsubscribe());
   }
 
+  _initSubscriptions() {
+    let sub = Observable.fromEvent(window, 'resize')
+      .throttleTime(100)
+      .subscribe(evt => {
+        this._setEditorHeight();
+      });
+    this.subs.push(sub);
+  }
+
+  _setEditorHeight() {
+    let height = this.util.getComputedStyle(document.querySelector('.note-list') as HTMLElement, 'height');
+    this.editorHeight = parseInt(height, 10);
+  }
   private initDragEvents() {
     let self = this;
     let leftSidebar = this.elementRef.nativeElement.querySelector('.left-sidebar');

@@ -5,7 +5,7 @@
     </div>
     <div class="drag-line"></div>
     <div class="list-group file-list">
-      <strong class="list-group-item">File List</strong>
+      <strong class="list-group-item">{{'home.file_list' | translate}}</strong>
       <a href="#" class="list-group-item">index.js</a>
       <a href="#" class="list-group-item">index.html</a>
       <a href="#" class="list-group-item">index.css</a>
@@ -14,9 +14,7 @@
   <div class="right-viewport">
     <div class="note-list">
       <div class="drag-line"></div>
-      <div>
-        Editor
-      </div>
+      <ace-editor name="" [mode]="editorMode" [height]="editorHeight" [(ngModel)]="editorValue"></ace-editor>
     </div>
     <div class="note-view">
       Preview
