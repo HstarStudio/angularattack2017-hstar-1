@@ -1,0 +1,68 @@
+{
+  "name": "web-dojo-front",
+  "version": "0.1.0",
+  "description": "A dojo for the front end web.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack-dev-server --config build/webpack.dev.conf.js",
+    "dev:hot": "node build/hot-server.js",
+    "build": "webpack --config build/webpack.prod.conf.js",
+    "ngc": "ngc -p tsconfig-aot.json",
+    "aot:rollup": "npm run ngc && rollup -c build/rollup-config.js",
+    "aot:webpack": "npm run ngc && webpack --config build/webpack.aot.conf.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hackbit/angularattack2017-hstar"
+  },
+  "keywords": [
+    "Markdown",
+    "RickEditor",
+    "Note",
+    "UI"
+  ],
+  "author": "Jay.M.Hu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Hackbit/angularattack2017-hstar/issues"
+  },
+  "homepage": "https://github.com/Hackbit/angularattack2017-hstar#readme",
+  "dependencies": {
+    "@angular/animations": "4.0.3",
+    "@angular/common": "4.0.3",
+    "@angular/compiler": "4.0.3",
+    "@angular/compiler-cli": "^4.0.3",
+    "@angular/core": "4.0.3",
+    "@angular/forms": "4.0.3",
+    "@angular/http": "4.0.3",
+    "@angular/platform-browser": "4.0.3",
+    "@angular/platform-browser-dynamic": "4.0.3",
+    "@angular/platform-server": "^4.0.3",
+    "@angular/router": "4.0.3",
+    "@progress/kendo-theme-default": "^2.31.3",
+    "core-js": "^2.4.1",
+    "normalize.css": "^6.0.0",
+    "rxjs": "5.3.0",
+    "zone.js": "0.8.8"
+  },
+  "devDependencies": {
+    "@types/core-js": "^0.9.39",
+    "angular2-template-loader": "^0.6.2",
+    "awesome-typescript-loader": "^3.1.2",
+    "css-loader": "^0.28.0",
+    "eventsource-polyfill": "^0.9.6",
+    "extract-text-webpack-plugin": "^2.1.0",
+    "html-loader": "^0.4.5",
+    "html-webpack-plugin": "^2.28.0",
+    "shelljs": "^0.7.7",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.1",
+    "typescript": "2.3.0",
+    "webpack": "^2.3.2",
+    "webpack-dev-middleware": "^1.10.1",
+    "webpack-dev-server": "^2.4.2",
+    "webpack-hot-middleware": "^2.18.0",
+    "webpack-merge": "^4.1.0"
+  }
+}
