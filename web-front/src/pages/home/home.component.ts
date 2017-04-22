@@ -4,23 +4,17 @@ import { Observable, Subscription } from 'rxjs';
 import { UtilService } from './../../services';
 
 @Component({
-	templateUrl: 'home.component.html'
+  templateUrl: 'home.component.html'
 })
 
 export class HomeComponent implements OnInit {
 
- private dragEvents: Array<any> = [];
+  private dragEvents: Array<any> = [];
 
   constructor(
     private elementRef: ElementRef,
     private util: UtilService
   ) { }
-
-  private baseImageUrl: string = "http://demos.telerik.com/kendo-ui/content/web/panelbar/";
-
-    private imageUrl(imageName: string) :string {
-        return this.baseImageUrl + imageName + ".jpg";
-    }
 
   ngOnInit() {
     this.initDragEvents();
@@ -31,6 +25,7 @@ export class HomeComponent implements OnInit {
   }
 
   private initDragEvents() {
+    let self = this;
     let leftSidebar = this.elementRef.nativeElement.querySelector('.left-sidebar');
     let rightViewport = this.elementRef.nativeElement.querySelector('.right-viewport');
     let drag = leftSidebar.querySelector('.drag-line');
@@ -39,12 +34,12 @@ export class HomeComponent implements OnInit {
     let dragEvent = this.util.initDrag(drag, (dragObj: any, e: MouseEvent) => {
       let moveX = e.pageX - dragObj.pageX;
       let width = dragObj.initialLeft + moveX;
-      width = Math.max(200, Math.min(720, width)); // 小于等于720，大于等于200
+      width = Math.max(160, Math.min(240, width)); // 小于等于720，大于等于200
       leftSidebar.style.width = `${width}px`;
       rightViewport.style.left = `${width}px`;
     }, {
         processDragObj(dragObj: any) {
-          dragObj.initialLeft = parseInt(leftSidebar.style.width || '240', 10);
+          dragObj.initialLeft = parseInt(leftSidebar.style.width || '200', 10);
         }
       }
     );
@@ -63,7 +58,8 @@ export class HomeComponent implements OnInit {
       noteView.style.left = `${width}px`;
     }, {
         processDragObj(dragObj: any) {
-          dragObj.initialLeft = parseInt(noteList.style.width || '320', 10);
+          let clientWidth = parseInt(self.util.getComputedStyle(noteList, 'width'), 10);
+          dragObj.initialLeft = parseInt(noteList.style.width || clientWidth.toString(), 10);
         }
       }
     );
