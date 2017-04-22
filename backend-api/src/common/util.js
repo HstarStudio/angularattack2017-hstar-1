@@ -1,23 +1,36 @@
 const uuid = require('uuid');
 const sechash = require('sechash');
+const shortid = require('shortid');
+const nodeMd5 = require('md5');
 
-const algorithm = 'sha1';
-
-const getHashValue = (userId, length) => {
-  let seed = `${userId}_${Date.now()}`;
-  return sechash.basicHash(algorithm, seed).slice(0, length);
+const generateShortId = () => {
+  return shortid.generate();
 };
 
-const buildId = (userId) => {
-  return getHashValue(userId, 8);
+const hashCode = (str, len = undefined, algorithm = 'sha1') => {
+  return sechash.basicHash(algorithm, str).slice(0, len);
 };
 
-const buildToken = (userId) => {
-  let seed = Date.now();
-  return getHashValue(userId, 21);
+const generateUUID = () => {
+  return uuid.v4();
+};
+
+const md5 = (str) => {
+  return nodeMd5(str);
+};
+
+const bizException = (message, status = 500) => {
+  return {
+    isBizException: true,
+    message,
+    status
+  };
 };
 
 module.exports = {
-  buildId,
-  buildToken
+  generateShortId,
+  hashCode,
+  generateUUID,
+  md5,
+  bizException
 };

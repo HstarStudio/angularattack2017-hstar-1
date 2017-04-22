@@ -1,37 +1,49 @@
-var path = require('path');
-var express = require('express');
-var rexpress = require('neg-rexpress');
-var busboy = require('connect-busboy');
-var config = require('./config');
+const path = require('path');
+const express = require('express');
+const restExpress = require('rest-express');
+const expressToken = require('express-token');
 
-var logOption = {
-    apiLog: {
-        uri: 'http://10.16.75.24:3000/framework/v1/log-entry',
-        global: 'Newegg',
-        local: 'Newegg-dojo',
-        category: "Exception"
-    } 
-};
-var routePath = `${__dirname}/routes`;
-var beforeLoadRoute = (app) => {
-    // app.use(history());
-    app.use(busboy({
-        limits: {
-            fileSize: 1024 * 1024 * 50 //50M
-        }
-    }));
-};
+const config = require('./config');
 
-var options = {
-    logConfig: logOption,
-    routePath: routePath,
-    port: config.port,
-    consoleFormat: 'dev',
-    errorTitle: 'Newegg Dojo Error',
-    beforeLoadRoute: beforeLoadRoute
-};
+const options = {
+  port: config.port,
+  enableCors: true,
+  enableGzip: true,
+  apiPrefix: config.apiPrefix,
+  routesPath: path.join(__dirname, 'routes'),
+  onRoutesLoading(app) {
+    app.use(expressToken({ tokenHeader: 'x-dojo-token' }));
+  },
+  onRoutesLoaded: app => {
+    app.use((req, res, next) => {
+      var err = new Error('API not found.');
+      err.status = 404;
+      next(err);
+    });
 
-rexpress.startServer(options, (server, app) => {
-    var addr = server.address();
-    console.log(`Start server at ${addr.address},port:${addr.port}`);
-});
+    app.use((err, req, res, next) => {
+      res.status(err.status || 500);
+      let errResult;
+      if (err.isBizException) {
+        errResult = err;
+      } else {
+        errResult = {
+          message: (err instanceof Error) ? err.message : err,
+          error: config.debug ? err : null
+        };
+      }
+      res.send(errResult);
+    });
+  }
+};
+// 如果是调试模式
+if (config.debug) {
+  options.enableResponseTime = true;
+  options.enableLog = true;
+}
+
+restExpress.startServer(options)
+  .then(server => {
+    let addr = server.address();
+    console.log(`Server started at ${addr.address}:${addr.port}`);
+  }, console.error);

@@ -17,11 +17,13 @@
   "author": "Jay.M.Hu",
   "license": "MIT",
   "dependencies": {
-    "connect-busboy": "0.0.2",
+    "express-token": "0.0.1",
+    "md5": "^2.2.1",
     "nedb": "^1.8.0",
-    "neg-rexpress": "0.0.8",
     "request": "^2.72.0",
+    "rest-express": "^1.2.0",
     "sechash": "^0.2.1",
+    "shortid": "^2.2.8",
     "uuid": "^2.0.2"
   },
   "devDependencies": {

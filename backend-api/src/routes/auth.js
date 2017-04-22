@@ -1,15 +1,13 @@
-'use strict';
-
-var router = require('express').Router();
-var config = require('./../config');
-var authBiz = require('./../bizs/authBiz');
+const router = Router();
+const authBiz = require('./../bizs/authBiz');
 
 router.post('/login', authBiz.doLogin);
-
 router.post('/autologin', authBiz.doAutoLogin);
-
 router.post('/logout', authBiz.doLogout);
+router.post('/register', authBiz.doRegister);
 
-module.exports = (app) => {
-  app.use(`${config.apiPrefix}/auth`, router);
+module.exports = {
+  router,
+  priority: 0,
+  prefix: '/auth'
 };
