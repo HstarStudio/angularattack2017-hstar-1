@@ -1,0 +1,33 @@
+{
+  "name": "web-dojo-api",
+  "version": "0.1.0",
+  "description": "A dojo for the front end web.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "gulp4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hackbit/angularattack2017-hstar"
+  },
+  "keywords": [
+    "Dojo",
+    "Web"
+  ],
+  "author": "Jay.M.Hu",
+  "license": "MIT",
+  "dependencies": {
+    "connect-busboy": "0.0.2",
+    "nedb": "^1.8.0",
+    "neg-rexpress": "0.0.8",
+    "request": "^2.72.0",
+    "sechash": "^0.2.1",
+    "uuid": "^2.0.2"
+  },
+  "devDependencies": {
+    "gulp-develop-server": "^0.5.1",
+    "gulp4": "^4.0.1",
+    "node-notifier": "^5.0.2",
+    "shelljs": "^0.7.6"
+  }
+}
