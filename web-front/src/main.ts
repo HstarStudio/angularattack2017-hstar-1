@@ -1,3 +1,4 @@
+require('@progress/kendo-theme-default/dist/all.css');
 require('./styl/all.styl');
 
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';

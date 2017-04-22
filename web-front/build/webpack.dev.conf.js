@@ -6,7 +6,7 @@ const util = require('./util');
 const hotMiddlewareScript = 'webpack-hot-middleware/client?reload=true';
 
 const devConfig = webpackMerge(commonConfig, {
-  devtool: 'cheap-module-eval-source-map',
+  devtool: 'cheap-source-map',
   output: {
     path: util.root('dist'),
     publicPath: '/',
@@ -15,20 +15,20 @@ const devConfig = webpackMerge(commonConfig, {
   },
   plugins: [
     new ExtractTextPlugin('[name].css'),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin()
+    // new webpack.HotModuleReplacementPlugin(),
+    // new webpack.NamedModulesPlugin()
   ],
-  // devServer: {
-  //   // host: '0.0.0.0', // If need visit extenal, cancel the comment
-  //   port: 7410,
-  //   historyApiFallback: true,
-  //   stats: 'minimal',
-  //   open: true
-  // }
+  devServer: {
+    // host: '0.0.0.0', // If need visit extenal, cancel the comment
+    port: 7410,
+    historyApiFallback: true,
+    stats: 'minimal',
+    open: true
+  }
 });
 
-Object.keys(devConfig.entry).forEach(key => {
-  devConfig.entry[key] = ['eventsource-polyfill', hotMiddlewareScript].concat(devConfig.entry[key]);
-});
+// Object.keys(devConfig.entry).forEach(key => {
+//   devConfig.entry[key] = ['eventsource-polyfill', hotMiddlewareScript].concat(devConfig.entry[key]);
+// });
 
 module.exports = devConfig;

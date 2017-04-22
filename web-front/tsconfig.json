@@ -15,5 +15,9 @@
     ],
     "noImplicitAny": true,
     "suppressImplicitAnyIndexErrors": true
-  }
+  },
+  "exclude": [
+    "node_modules/",
+    "aot/**"
+  ]
 }

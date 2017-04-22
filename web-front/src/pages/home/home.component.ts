@@ -1,20 +1,26 @@
-require('./main.styl');
-import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
+require('./home.styl');
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { UtilService } from './../../services';
 
 @Component({
-  templateUrl: 'main.component.html'
+	templateUrl: 'home.component.html'
 })
 
-export class MainComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit {
 
-  private dragEvents: Array<any> = [];
+ private dragEvents: Array<any> = [];
 
   constructor(
     private elementRef: ElementRef,
     private util: UtilService
   ) { }
+
+  private baseImageUrl: string = "http://demos.telerik.com/kendo-ui/content/web/panelbar/";
+
+    private imageUrl(imageName: string) :string {
+        return this.baseImageUrl + imageName + ".jpg";
+    }
 
   ngOnInit() {
     this.initDragEvents();
