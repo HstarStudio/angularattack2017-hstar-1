@@ -1,7 +1,7 @@
 {
   "name": "web-dojo-front",
   "version": "0.1.0",
-  "description": "A dojo for the front end web.",
+  "description": "A dojo for the front and web.",
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --config build/webpack.dev.conf.js",
