@@ -72,6 +72,12 @@ const doRegister = (req, res, next) => {
   let data = req.body;
   Validator.validate(data, authSchemas.USER_LOGON_SCHEMA)
     .then(() => {
+      return db.count(db.collections.users, { username: data.username });
+    })
+    .then(userCount => {
+      if (userCount > 0) {
+        return Promise.reject(util.bizException('User name is exists, pleace change one and retry.'));
+      }
       let userInfo = { username: data.username, password: util.md5(data.password) };
       return db.insert(db.collections.users, userInfo);
     })
