@@ -1,7 +1,7 @@
 require('./login.styl');
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { WdAjax, WdEventBus } from './../../shared';
+import { WdAjax, WdEventBus, WdAlert } from './../../shared';
 import { AuthService } from './../../services';
 
 @Component({
@@ -24,6 +24,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private router: Router,
     private ajax: WdAjax,
+    private alert: WdAlert,
     private eventBus: WdEventBus,
     private auth: AuthService
   ) {
@@ -53,7 +54,7 @@ export class LoginComponent implements OnInit {
 
   public doRegister() {
     if (this.registerUser.password !== this.registerUser.password2) {
-      return alert('两次密码不一致');
+      return this.alert.msg('两次密码不一致');
     }
     this.ajax.post(`${AppConf.apiHost}/auth/register`, this.registerUser)
       .then(({ data }) => {

@@ -32,4 +32,11 @@ export class LayoutComponent implements OnInit {
   public navigate(path: string) {
     this.router.navigate([path]);
   }
+
+  public doLogout() {
+    this.auth.logout()
+      .then(() => {
+        window.location.href = '';
+      });
+  }
 }

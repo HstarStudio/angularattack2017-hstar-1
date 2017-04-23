@@ -144,11 +144,21 @@ const getMyProjectList = (req, res, next) => {
   _getProjectList(req, res, next, req.user._id);
 };
 
+const deleteProject = (req, res, next) => {
+  let projectId = req.params.projectId;
+  db.remove(db.collections.projects, { projectId })
+    .then(() => {
+      res.status(202).end();
+    })
+    .catch(next);
+};
+
 module.exports = {
   createProject,
   updateProject,
   updateProjectFiles,
   getProject,
   getProjectList,
-  getMyProjectList
+  getMyProjectList,
+  deleteProject
 };

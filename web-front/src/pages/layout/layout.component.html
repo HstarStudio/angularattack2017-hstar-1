@@ -15,7 +15,7 @@
           <li class="nav-item"><a href="javascript:;" class="nav-link" (click)="navigate('/')">Code Square</a></li>
           <li class="nav-item"><a href="javascript:;" class="nav-link" (click)="navigate('/new')">New</a></li>
           <li class="nav-item"><a href="javascript:;" class="nav-link" (click)="saveProject()">Save</a></li>
-          <li class="nav-item"><a href="javascript:;" class="nav-link" (click)="navigate('/my')">My Dojo</a></li>
+          <li class="nav-item" *ngIf="username"><a href="javascript:;" class="nav-link" (click)="navigate('/my')">My Dojo</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li class="nav-item" *ngIf="!username"><a href="javascript:;" class="nav-link" (click)="navigate('/login')">Login</a></li>
@@ -24,7 +24,7 @@
             <ul role="menu" class="dropdown-menu">
               <!--<li><a href="javascript:void(0);">Settings</a></li>-->
               <!--<li class="divider"></li>-->
-              <li><a href="javascript:void(0);">{{ 'layout.logout' | translate }} </a></li>
+              <li><a href="javascript:void(0);" (click)="doLogout()">{{ 'layout.logout' | translate }} </a></li>
             </ul>
           </li>
         </ul>

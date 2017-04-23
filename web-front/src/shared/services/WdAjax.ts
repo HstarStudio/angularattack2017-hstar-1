@@ -1,12 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Http, RequestOptions, Headers, ResponseContentType, Response } from '@angular/http';
+import { WdAlert } from './WdAlert';
 
 @Injectable()
 export class WdAjax {
 
   private _commonHeader = {};
 
-  constructor(private http: Http) { }
+  constructor(
+    private http: Http,
+    private alert: WdAlert
+  ) {
+  }
 
   _request(type: string, url: string, data: any, options: any): Promise<any> {
     options = options || {};
@@ -25,7 +30,8 @@ export class WdAjax {
       }).then(({ res, requestOk }) => {
         let data = res.json();
         if (!requestOk || (data && data.isBizException)) {
-          alert(data.message);
+          this.alert.error(data.message);
+          console.log('xx');
           return Promise.reject({ res, data });
         }
         return Promise.resolve({ res, data });

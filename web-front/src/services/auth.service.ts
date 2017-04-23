@@ -5,7 +5,6 @@ import { WdAjax } from './../shared';
 export class AuthService {
 
   private _userInfo: { username?: string, token?: string } = {};
-  private _logged: boolean = false;
 
   constructor(
     private ajax: WdAjax
@@ -13,7 +12,6 @@ export class AuthService {
 
   public setUserInfo(userInfo: any) {
     this._userInfo = userInfo;
-    this._logged = true;
     localStorage.setItem('x-dojo-token', userInfo.token);
     this.ajax.setCommonHeader('x-dojo-token', userInfo.token);
   }
@@ -24,10 +22,6 @@ export class AuthService {
 
   public get token() {
     return this._userInfo.token;
-  }
-
-  public get logged() {
-    return this._logged;
   }
 
   public autoLogin(token: string) {
@@ -41,6 +35,14 @@ export class AuthService {
       })
       .catch(() => {
         return Promise.resolve(true);
+      });
+  }
+
+  public logout() {
+    return this.ajax.post(`${AppConf.apiHost}/auth/logout`)
+      .then(() => {
+        this.ajax.setCommonHeader('x-dojo-token', null);
+        localStorage.removeItem('x-dojo-token');
       });
   }
 }

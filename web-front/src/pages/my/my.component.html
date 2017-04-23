@@ -1,21 +1,49 @@
 <div class="page-my">
   <div class="container">
-    <kendo-grid [data]="projectList" [height]="410">
-      <kendo-grid-column field="ProductID" title="ID" width="40">
-      </kendo-grid-column>
-      <kendo-grid-column field="ProductName" title="Name" width="250">
-      </kendo-grid-column>
-      <kendo-grid-column field="Category.CategoryName" title="Category">
-      </kendo-grid-column>
-      <kendo-grid-column field="UnitPrice" title="Price" width="80">
-      </kendo-grid-column>
-      <kendo-grid-column field="UnitsInStock" title="In stock" width="80">
-      </kendo-grid-column>
-      <kendo-grid-column field="Discontinued" title="Discontinued" width="120">
+    <kendo-grid [data]="projectList" [height]="600">
+      <kendo-grid-column field="" title="Name" width="200">
         <ng-template kendoGridCellTemplate let-dataItem>
-          <input type="checkbox" [checked]="dataItem.Discontinued" disabled/>
+          <a href="javascript:;" (click)="navigate(dataItem)">{{dataItem.projectName}}</a>
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column field="templateName" title="Template" width="80">
+      </kendo-grid-column>
+      <kendo-grid-column field="projectDescription" title="Description">
+      </kendo-grid-column>
+      <kendo-grid-column field="lastUpdateDate" title="Last Update" width="150">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          {{ dataItem.lastUpdateDate | date: 'yyyy/MM/dd HH:mm'}}
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column title="Operate" width="80">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <a href="javascript:;" (click)="editProjectInfo(dataItem)"><i class="fa fa-edit"></i></a>
+          <a href="javascript:;" (click)="deleteProject(dataItem)"><i class="fa fa-minus"></i></a>
         </ng-template>
       </kendo-grid-column>
     </kendo-grid>
   </div>
+  <kendo-dialog title="Save Project" *ngIf="showSaveDialog" [width]="600" (close)="showSaveDialog = false">
+    <form>
+      <div class="form-group">
+        <label>Project Name</label>
+        <input type="text" class="form-control" placeholder="Name for search" name="name" [(ngModel)]="currentProject.projectName"
+          required>
+        <span class="text-danger" *ngIf="!currentProject.projectName">Project name required.</span>
+      </div>
+      <div class="form-group">
+        <label>Project Description</label>
+        <textarea class="form-control" rows="5" placeholder="Tell us what the project means" name="description" [(ngModel)]="currentProject.projectDescription"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Project Tags</label>
+        <kendo-multiselect name="tags" [data]="tagItems" [(ngModel)]="currentProject.projectTags"></kendo-multiselect>
+        <span class="text-danger" *ngIf="currentProject.projectTags.length === 0">Need at least one tag.</span>
+      </div>
+    </form>
+    <kendo-dialog-actions>
+      <button kendoButton (click)="showSaveDialog = false">Cancel</button>
+      <button kendoButton (click)="saveProjectInfo()" primary="true">Save changes</button>
+    </kendo-dialog-actions>
+  </kendo-dialog>
 </div>

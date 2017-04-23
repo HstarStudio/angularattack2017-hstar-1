@@ -13,6 +13,8 @@ router.get('/my', projectBiz.getMyProjectList);
 
 router.get('/:username/:projectId', projectBiz.getProject);
 
+router.delete('/:projectId', projectBiz.deleteProject);
+
 module.exports = {
   router,
   priority: 0,
