@@ -2,7 +2,7 @@ require('./home.styl');
 import { Component, OnInit, ElementRef, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { UtilService, TemplateService } from './../../services';
-import { WdAjax } from './../../shared';
+import { WdAjax, WdEventBus } from './../../shared';
 
 const extTypeMapping = {
   '.js': 'javascript',
@@ -45,6 +45,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private elementRef: ElementRef,
     private ajax: WdAjax,
+    private eventBus: WdEventBus,
     private util: UtilService,
     private template: TemplateService
   ) { }
@@ -55,6 +56,9 @@ export class HomeComponent implements OnInit {
     this._initSubscriptions();
     this._setEditorHeight();
     this._initProject();
+    this.eventBus.on('project_save_click', () => {
+      this._saveProject();
+    }, this);
   }
 
   ngOnDestroy() {
@@ -116,8 +120,10 @@ export class HomeComponent implements OnInit {
     if (!this.projectInfo.projectName || this.projectInfo.projectTags.length === 0) {
       return;
     }
-    this.ajax.post(`http://localhost:8603/api/v1/auth/autologin`, { username: 'aaaa', password: 'fdsafsd' });
-    this.showSaveDialog = false;
+    this.ajax.post(`${AppConf.apiHost}/project`, this.projectInfo)
+      .then(({ data }) => {
+        this.showSaveDialog = false;
+      });
   }
 
   private _setProjectFilesByTemplate(template: any) {
@@ -166,7 +172,6 @@ export class HomeComponent implements OnInit {
       .replace('<!--body-->', html)
       .replace('<!--js-->', `<script>${js}</script>`)
       .replace('<!--css-->', `<style>${css}</style>`);
-    console.log(iframeContent);
     return iframeContent;
   }
 

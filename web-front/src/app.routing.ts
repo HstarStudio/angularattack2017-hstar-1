@@ -1,16 +1,18 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { 
+import {
   LayoutComponent, LoginComponent,
-  HomeComponent
+  HomeComponent, MyComponent
 } from './pages';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {
     path: '', component: LayoutComponent, children: [
-      { path: '', component: HomeComponent }
+      { path: '', component: HomeComponent },
+      { path: 'my', component: MyComponent },
+      { path: ':user/:project', component: HomeComponent }
     ]
   },
 ];

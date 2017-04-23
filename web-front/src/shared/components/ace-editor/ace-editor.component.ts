@@ -1,5 +1,5 @@
 require('./ace-editor.styl');
-import { Component, OnInit, Input, ElementRef, forwardRef, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, forwardRef, OnChanges, SimpleChanges, OnDestroy, AfterViewInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -10,7 +10,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ]
 })
 
-export class AceEditorComponent implements ControlValueAccessor, OnInit, OnChanges {
+export class AceEditorComponent implements ControlValueAccessor, OnInit, OnChanges, OnDestroy {
 
   public editorId: string = `ace-editor-${Math.random().toString(16).replace('.', '')}`;
   private editor: any = null;
@@ -34,6 +34,10 @@ export class AceEditorComponent implements ControlValueAccessor, OnInit, OnChang
   constructor(private elementRef: ElementRef) { }
 
   ngOnInit() {
+
+  }
+
+  ngAfterViewInit() {
     this.elementRef.nativeElement.querySelector('pre').setAttribute('id', this.editorId);
     this._initAceEditor();
   }
@@ -50,6 +54,11 @@ export class AceEditorComponent implements ControlValueAccessor, OnInit, OnChang
     }
   }
 
+  ngOnDestroy() {
+    this.editor.container.remove();
+    this.editor.destroy();
+  }
+
   _initAceEditor() {
     let ace = window['ace'];
     let editor = this.editor = ace.edit(this.editorId);
@@ -64,7 +73,7 @@ export class AceEditorComponent implements ControlValueAccessor, OnInit, OnChang
     editor.setOption('enableSnippets', true);
     editor.setOption('showPrintMargin', false);
     editor.setReadOnly(this.readonly);
-    editor.setValue(this.value, 1);
+    editor.setValue(this.value || '', 1);
     let self = this;
     editor.commands.addCommand({
       name: 'format',

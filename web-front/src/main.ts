@@ -1,5 +1,6 @@
 require('@progress/kendo-theme-default/dist/all.css');
 require('./styl/all.styl');
+import './config';
 
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { enableProdMode } from '@angular/core';

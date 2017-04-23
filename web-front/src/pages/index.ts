@@ -4,6 +4,7 @@ import { LoginComponent } from './login/login.component';
 
 import { LayoutComponent } from './layout/layout.component';
 import { HomeComponent } from './home/home.component';
+import { MyComponent } from './my/my.component';
 
 export {
   AppComponent,
@@ -11,7 +12,8 @@ export {
   LoginComponent,
 
   LayoutComponent,
-  HomeComponent
+  HomeComponent,
+  MyComponent
 };
 
 export const ALL_PAGES = [
@@ -20,5 +22,6 @@ export const ALL_PAGES = [
   LoginComponent,
 
   LayoutComponent,
-  HomeComponent
+  HomeComponent,
+  MyComponent
 ];
