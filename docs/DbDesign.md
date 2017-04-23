@@ -15,8 +15,9 @@
 ```
 {
   _id: string, // ID.
-  codeId: string, // ShordId.
+  projectId: string, // ShordId.
   userId: string, // creator
+  templateName: string, // template name
   projectName: string, // name
   projectDescription：string,
   projectTags: string, // tags for project
@@ -25,6 +26,8 @@
     'index.html': string, // html content
     'index.css': string // css content
     ... // support more files(maybe)
-  }
+  },
+  createDate: long,
+  lastUpdateDate: long
 }
 ```

@@ -1,5 +1,11 @@
 const router = Router();
-const dojoBiz = require('./../bizs/dojoBiz');
+const projectBiz = require('./../bizs/projectBiz');
+
+router.post('/', projectBiz.createProject);
+
+router.put('/:projectId', projectBiz.updateProject);
+
+router.put('/:projectId/files', projectBiz.updateProjectFiles);
 
 // 项目相关Start
 // router.get('/get-my-codes', dojoBiz.getMyCodes);
