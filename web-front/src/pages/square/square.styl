@@ -1,0 +1,40 @@
+.page-square {
+  .project-list-container {
+    margin-top: 20px;
+    >div {
+      padding: 20px;
+    }
+  }
+
+  .project-item {
+    border: none;
+    box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+    border-radius: 0.28571429rem;
+    transition: box-shadow 0.1s ease, transform 0.1s ease, -webkit-transform 0.1s ease;
+    .project-item-name {
+      padding: 16px;
+      border-radius: .28571429rem .28571429rem 0 0!important;
+      border-top: none;
+    }
+    .project-item-description {
+      border-top: 1px solid rgba(34,36,38,.1);
+      padding: 14px;
+      height: 100px;
+      -webkit-line-clamp: 4;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .project-item-tags {
+      border-top: 1px solid rgba(34,36,38,.05);
+      padding: 10px 14px;
+      span.label {
+        background-color: #e8e8e8;
+        padding: .5833em .833em;
+        border-radius: .28571429rem;
+        transition: background .1s ease;
+        marign: 0 10px 0 2px;
+        color: rgba(0,0,0,.6);
+      }
+    }
+  }
+}

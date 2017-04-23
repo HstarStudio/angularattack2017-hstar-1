@@ -9,6 +9,8 @@ router.put('/:projectId/files', projectBiz.updateProjectFiles);
 
 router.get('/:username/:projectId', projectBiz.getProject);
 
+router.get('/', projectBiz.getProjectList);
+
 // 项目相关Start
 // router.get('/get-my-codes', dojoBiz.getMyCodes);
 // router.get('/get-square-codes', dojoBiz.getSquareCodes);

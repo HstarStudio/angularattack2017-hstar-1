@@ -102,9 +102,37 @@ const getProject = (req, res, next) => {
     .catch(next);
 };
 
+const getProjectList = (req, res, next) => {
+  let pageSize = +(req.query.pageSize || 10);
+  let pageIndex = +(req.query.pageIndex || 1);
+  let q = req.query.q;
+  let searchObj = {};
+  // 关键字匹配
+  if (q) {
+    searchObj.$or = [
+      { projectName: { $regex: new RegExp(q, 'gi') } },
+      { projectDescription: { $regex: new RegExp(q, 'gi') } },
+      { tags: { $elemMatch: q } }
+    ];
+  }
+  Promise.all([
+    db.find(db.collections.projects, searchObj, null, { lastUpdateDate: -1 }, { pageIndex, pageSize }),
+    db.count(db.collections.projects, searchObj)
+  ])
+    .then(results => {
+      res.send({
+        totalCount: results[1],
+        data: results[0],
+        pageIndex,
+        pageSize
+      });
+    });
+};
+
 module.exports = {
   createProject,
   updateProject,
   updateProjectFiles,
-  getProject
+  getProject,
+  getProjectList
 };
