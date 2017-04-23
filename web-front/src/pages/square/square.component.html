@@ -1,5 +1,8 @@
 <div class="page-square">
   <div class="project-list-container">
+    <div class="container" *ngIf="projectList.length === 0">
+      No records available. <button kendoButton (click)="router.navigate(['/new'])" [iconClass]="'fa fa-plus fa-fw'"> Create project</button>
+    </div>
     <div *ngFor="let item of projectList" class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
       <div class="project-item">
         <div class="project-item-name">
@@ -10,7 +13,7 @@
         </div>
         <div class="project-item-tags">
           <span class="label">{{item.username}}</span>
-          <span class="pull-right">{{item.createDate | date: 'yyyy/MM/dd HH:mm'}}</span>          
+          <span class="pull-right">{{item.createDate | date: 'yyyy/MM/dd HH:mm'}}</span>
         </div>
         <div class="project-item-tags">
           <span class="label" *ngFor="let t of item.projectTags">

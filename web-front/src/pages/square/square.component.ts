@@ -19,7 +19,7 @@ export class SquareComponent implements OnInit, OnDestroy {
   private mainContainer: HTMLElement;
 
   constructor(
-    private router: Router,
+    public router: Router,
     private ajax: WdAjax
   ) {
 
