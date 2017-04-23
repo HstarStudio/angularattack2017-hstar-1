@@ -27,7 +27,8 @@ export default {
     cancel_change: '取消切换',
     change_template: '仅切换模板',
     change_all: '切换模板和内容',
-    save_title: '保存新项目'
+    save_title: '保存新项目',
+    tips: '小提示: 使用 `Ctrl + S` 可保存代码'
   },
   common: {
     'cancel_label': '取消',

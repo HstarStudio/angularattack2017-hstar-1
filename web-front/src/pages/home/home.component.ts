@@ -3,7 +3,7 @@ import { Component, OnInit, ElementRef, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { UtilService, TemplateService } from './../../services';
-import { WdAjax, WdEventBus } from './../../shared';
+import { WdAjax, WdEventBus, WdAlert } from './../../shared';
 
 const extTypeMapping = {
   '.js': 'javascript',
@@ -48,6 +48,7 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private ajax: WdAjax,
+    private alert: WdAlert,
     private eventBus: WdEventBus,
     private util: UtilService,
     private template: TemplateService
@@ -185,6 +186,7 @@ export class HomeComponent implements OnInit {
       templateName: this.currentTemplate.name
     })
       .then(() => {
+        this.alert.msg('Save succeed.');
         this.runCode();
       });
   }

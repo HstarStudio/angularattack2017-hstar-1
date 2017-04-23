@@ -8,6 +8,12 @@
       <strong class="list-group-item">{{'home.template_list' | translate}}</strong>
       <a href="javascript:;" class="list-group-item" *ngFor="let t of templates" [ngClass]="{active: currentTemplate.name === t.key}"
         (click)="changeTemplate(t)">{{t.text}}</a>
+
+      <div class="panel panel-danger tip-info">
+        <div class="panel-body text-danger">
+          {{ 'home.tips' | translate}}
+        </div>
+      </div>
     </div>
   </div>
   <div class="right-viewport">

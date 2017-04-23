@@ -27,7 +27,8 @@ export default {
     cancel_change: 'Cancel Change',
     change_template: 'Only Change Template',
     change_all: 'Change Template & Content',
-    save_title: 'Save new project'
+    save_title: 'Save new project',
+    tips: 'Tips: Use `Ctrl + S` to save code.'
   },
   common: {
     'cancel_label': 'Cancel',
