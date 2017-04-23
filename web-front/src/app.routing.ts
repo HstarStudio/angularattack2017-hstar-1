@@ -10,12 +10,13 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {
     path: '', component: LayoutComponent, children: [
-      { path: '', component: HomeComponent },
+      { path: '', component: SquareComponent },
+      { path: 'new', component: HomeComponent },
+      { path: ':user/:project', component: HomeComponent },
       { path: 'my', component: MyComponent },
-      { path: 'square', component: SquareComponent },
-      { path: ':user/:project', component: HomeComponent }
     ]
   },
+  { path: '**', redirectTo: '' }
 ];
 
 export const routing: ModuleWithProviders = RouterModule.forRoot(routes, { useHash: false });

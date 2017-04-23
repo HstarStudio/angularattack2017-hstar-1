@@ -140,7 +140,6 @@ export class HomeComponent implements OnInit {
 
   private _initProject() {
     this.route.params.subscribe(params => {
-      console.log(params);
       if (!params.user) {
         this.currentTemplate = this.template.getTemplate('normal');
         this._setProjectFilesByTemplate(this.currentTemplate);
