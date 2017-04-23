@@ -4,7 +4,9 @@
   "description": "A dojo for the front end web.",
   "main": "index.js",
   "scripts": {
-    "dev": "gulp4"
+    "dev": "gulp4",
+    "build": "gulp4 release",
+    "build:dep": "gulp4 release -i"
   },
   "repository": {
     "type": "git",
