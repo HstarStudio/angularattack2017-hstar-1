@@ -1,7 +1,7 @@
 <div class="page-login">
   <div class="login-div">
     <div class="panel panel-info">
-      <div class="panel-heading">Welcome to Web Dojo</div>
+      <div class="panel-heading">{{'login.welcome' | translate}}</div>
       <div class="panel-body">
         <kendo-tabstrip>
           <kendo-tabstrip-tab [title]="'login.login_label' | translate" [selected]="true">
@@ -19,10 +19,10 @@
               </div>
 
               <div class="checkbox">
-                <label> <input type="checkbox" name="remember" [(ngModel)]="remember"> Remember user name </label>
+                <label> <input type="checkbox" name="remember" [(ngModel)]="remember"> {{'login.remember' | translate}} </label>
               </div>
               <br>
-              <button kendoButton (click)="doLogin()" [iconClass]="'fa fa-send fa-fw'"> Log in Web Dojo</button>
+              <button kendoButton (click)="doLogin()" [iconClass]="'fa fa-send fa-fw'"> {{ 'login.login_btn' | translate}}</button>
             </ng-template>
           </kendo-tabstrip-tab>
           <kendo-tabstrip-tab [title]="'login.register_label' | translate">
@@ -46,7 +46,7 @@
                   required>
               </div>
               <br>
-              <button kendoButton (click)="doRegister()" [iconClass]="'fa fa-send fa-fw'"> Register a new account</button>
+              <button kendoButton (click)="doRegister()" [iconClass]="'fa fa-send fa-fw'"> {{'login.register_btn' | translate}}</button>
             </ng-template>
           </kendo-tabstrip-tab>
         </kendo-tabstrip>

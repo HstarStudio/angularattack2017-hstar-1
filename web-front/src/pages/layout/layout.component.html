@@ -12,12 +12,19 @@
       </div>
       <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-left">
-          <li class="nav-item"><a href="javascript:;" class="nav-link" (click)="navigate('/')">Code Square</a></li>
-          <li class="nav-item"><a href="javascript:;" class="nav-link" (click)="navigate('/new')">New</a></li>
-          <li class="nav-item"><a href="javascript:;" class="nav-link" (click)="saveProject()">Save</a></li>
-          <li class="nav-item" *ngIf="username"><a href="javascript:;" class="nav-link" (click)="navigate('/my')">My Dojo</a></li>
+          <li class="nav-item"><a href="javascript:;" class="nav-link" (click)="navigate('/')">{{'layout.square' | translate}}</a></li>
+          <li class="nav-item"><a href="javascript:;" class="nav-link" (click)="navigate('/new')">{{ 'layout.new' | translate}}</a></li>
+          <li class="nav-item"><a href="javascript:;" class="nav-link" (click)="saveProject()">{{'layout.save' | translate}}</a></li>
+          <li class="nav-item" *ngIf="username"><a href="javascript:;" class="nav-link" (click)="navigate('/my')">{{'layout.my'|translate}}</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+            <a href="#" data-toggle="dropdown" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-globe"></i></a>
+            <ul role="menu" class="dropdown-menu">
+              <li><a href="javascript:void(0);" (click)="changeLanguage('en-us')"> English <i class="fa fa-circle text-danger" *ngIf="'en-us' === currentLang"></i></a></li>
+              <li><a href="javascript:void(0);" (click)="changeLanguage('zh-cn')"> 中文 <i class="fa fa-circle text-danger" *ngIf="'zh-cn' === currentLang"></i></a></li>
+            </ul>
+          </li>
           <li class="nav-item" *ngIf="!username"><a href="javascript:;" class="nav-link" (click)="navigate('/login')">Login</a></li>
           <li class="dropdown" *ngIf="username">
             <a href="#" data-toggle="dropdown" aria-expanded="false" class="dropdown-toggle">{{ 'layout.welcome' | translate }} <span>{{username}}</span> <span class="caret"></span></a>

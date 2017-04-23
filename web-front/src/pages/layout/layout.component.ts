@@ -1,7 +1,7 @@
 require('./layout.styl');
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { WdEventBus } from './../../shared';
+import { WdEventBus, WdTranslate } from './../../shared';
 import { AuthService } from './../../services';
 
 @Component({
@@ -11,11 +11,13 @@ import { AuthService } from './../../services';
 export class LayoutComponent implements OnInit {
 
   public username: string = '';
+  public currentLang: string = '';
 
   constructor(
     private router: Router,
     private changeDetectorRef: ChangeDetectorRef,
     private eventBus: WdEventBus,
+    private translate: WdTranslate,
     private auth: AuthService
   ) {
   }
@@ -23,6 +25,7 @@ export class LayoutComponent implements OnInit {
   ngOnInit() {
     let self = this;
     this.username = this.auth.username;
+    this.currentLang = this.translate.getCurrentLang();
   }
 
   public saveProject() {
@@ -31,6 +34,11 @@ export class LayoutComponent implements OnInit {
 
   public navigate(path: string) {
     this.router.navigate([path]);
+  }
+
+  public changeLanguage(lang: string) {
+    this.currentLang = lang;
+    this.translate.use(lang);
   }
 
   public doLogout() {

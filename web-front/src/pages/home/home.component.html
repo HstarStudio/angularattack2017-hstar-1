@@ -40,34 +40,34 @@
       </div>
     </div>
   </div>
-  <kendo-dialog title="Please confirm" *ngIf="showTemplateChangeDialog" [width]="700" (close)="closeTemplateChangeDialog()">
-    <p style="margin: 30px; text-align: center;">You are change the base template. Did you want to change project content?</p>
+  <kendo-dialog [title]="'home.confirm_title' | translate" *ngIf="showTemplateChangeDialog" [width]="700" (close)="closeTemplateChangeDialog()">
+    <p style="margin: 30px; text-align: center;">{{'home.sure_msg' | translate}}</p>
     <kendo-dialog-actions>
-      <button kendoButton (click)="closeTemplateChangeDialog()">Cancel Change</button>
-      <button kendoButton (click)="closeTemplateChangeDialog('onlyTemplate')">Only Change Template</button>
-      <button kendoButton (click)="closeTemplateChangeDialog('all')" primary="true">Change Template & Content</button>
+      <button kendoButton (click)="closeTemplateChangeDialog()">{{'home.cancel_change'|translate}}</button>
+      <button kendoButton (click)="closeTemplateChangeDialog('onlyTemplate')">{{'home.change_template'|translate}}</button>
+      <button kendoButton (click)="closeTemplateChangeDialog('all')" primary="true">{{'home.change_all'|translate}}</button>
     </kendo-dialog-actions>
   </kendo-dialog>
   <kendo-dialog title="Save Project" *ngIf="showSaveDialog" [width]="600" (close)="showSaveDialog = false">
     <form>
       <div class="form-group">
-        <label>Project Name</label>
+        <label>{{'home.project_name' | translate }}</label>
         <input type="text" class="form-control" placeholder="Name for search" name="name" [(ngModel)]="projectInfo.projectName" required>
         <span class="text-danger" *ngIf="!projectInfo.projectName">Project name required.</span>
       </div>
       <div class="form-group">
-        <label>Project Description</label>
+        <label>{{'home.project_description' | translate}}</label>
         <textarea class="form-control" rows="5" placeholder="Tell us what the project means" name="description" [(ngModel)]="projectInfo.projectDescription"></textarea>
       </div>
       <div class="form-group">
-        <label>Project Tags</label>
+        <label>{{'home.project_tags' | translate}}</label>
         <kendo-multiselect name="tags" [data]="tagItems" [(ngModel)]="projectInfo.projectTags"></kendo-multiselect>
         <span class="text-danger" *ngIf="projectInfo.projectTags.length === 0">Need at least one tag.</span>
       </div>
     </form>
     <kendo-dialog-actions>
-      <button kendoButton (click)="showSaveDialog = false">Cancel</button>
-      <button kendoButton (click)="doSaveProject()" primary="true">Save changes</button>
+      <button kendoButton (click)="showSaveDialog = false">{{ 'common.cancel_label' | translate}}</button>
+      <button kendoButton (click)="doSaveProject()" primary="true">{{'common.save_label' | translate}}</button>
     </kendo-dialog-actions>
   </kendo-dialog>
 </div>
