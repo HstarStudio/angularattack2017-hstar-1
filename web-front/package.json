@@ -8,7 +8,6 @@
     "dev:hot": "node build/hot-server.js",
     "build": "webpack --config build/webpack.prod.conf.js",
     "ngc": "ngc -p tsconfig-aot.json",
-    "aot:rollup": "npm run ngc && rollup -c build/rollup-config.js",
     "aot:webpack": "npm run ngc && webpack --config build/webpack.aot.conf.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -57,6 +56,7 @@
     "bootstrap": "^3.3.7",
     "core-js": "^2.4.1",
     "font-awesome": "^4.7.0",
+    "jquery": "^3.2.1",
     "normalize.css": "^6.0.0",
     "rxjs": "5.3.0",
     "zone.js": "0.8.8"

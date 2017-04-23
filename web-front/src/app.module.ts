@@ -28,5 +28,6 @@ export class AppModule {
   constructor(private wdTranslate: WdTranslate) {
     this.wdTranslate.set(langObj);
     this.wdTranslate.use('en-us');
+    // this.wdTranslate.use('zh-cn');
   }
 }

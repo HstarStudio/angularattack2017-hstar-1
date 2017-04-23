@@ -1,6 +1,32 @@
 <div class="page-layout">
-  <header class="top-header">
-    <h2>Web Dojo</h2>
+  <header class="top-header navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" class="navbar-toggle collapsed">
+          <span class="sr-only">Toggle navigation</span>
+           <span class="icon-bar"></span> 
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+          </button>
+        <a href="" class="navbar-brand">WEB DOJO</a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-left">
+          <li class="nav-item"><a href="javascript:void(0);" class="nav-link">New</a></li>
+          <li class="nav-item"><a href="javascript:void(0);" class="nav-link">Save</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+            <a href="#" data-toggle="dropdown" aria-expanded="false" class="dropdown-toggle">{{ 'layout.welcome' | translate }} <span>admin</span> <span class="caret"></span></a>
+            <ul role="menu" class="dropdown-menu">
+              <!--<li><a href="javascript:void(0);">Settings</a></li>-->
+              <!--<li class="divider"></li>-->
+              <li><a href="javascript:void(0);">{{ 'layout.logout' | translate }} </a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
   </header>
   <div class="main-container">
     <router-outlet></router-outlet>

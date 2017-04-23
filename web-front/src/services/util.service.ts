@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ElementRef } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 
 @Injectable()
@@ -52,5 +52,9 @@ export class UtilService {
 
   getComputedStyle(el: HTMLElement, styleProperty: string) {
     return window.getComputedStyle(el)[styleProperty];
+  }
+
+  $(selector: string, doc: any) {
+    return doc.querySelector(selector);
   }
 }

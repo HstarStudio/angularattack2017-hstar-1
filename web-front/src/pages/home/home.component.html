@@ -1,7 +1,7 @@
 <div class="page-home">
   <div class="left-sidebar">
-    <div class="file-tree-toggle">
-      <i class="fa fa-chevron-left"></i>
+    <div class="file-tree-toggle" (click)="menuMiniBtnClick()">
+      <i class="fa" [ngClass]="{'fa-chevron-right': isLeftSidebarMini, 'fa-chevron-left': !isLeftSidebarMini}"></i>
     </div>
     <div class="drag-line"></div>
     <div class="list-group file-list">
@@ -16,8 +16,13 @@
       <div class="drag-line"></div>
       <ace-editor name="" [mode]="editorMode" [height]="editorHeight" [(ngModel)]="editorValue"></ace-editor>
     </div>
-    <div class="note-view">
-      Preview
+    <div class="preview">
+      <div class="preview-toolbar">
+        <button class="btn btn-sm btn-success" (click)="runCode()" [disabled]="previewLoading">{{ (previewLoading ? 'home.load_preview': 'home.run_code') | translate }} <i class="fa fa-caret-right btn-run-icon"></i></button>
+      </div>
+      <div class="preview-container">
+
+      </div>
     </div>
   </div>
 </div>

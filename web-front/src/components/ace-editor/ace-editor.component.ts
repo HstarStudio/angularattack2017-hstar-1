@@ -11,7 +11,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export class AceEditorComponent implements ControlValueAccessor, OnInit, OnChanges {
 
-  private editorId: string = `ace-editor-${Math.random().toString(16).replace('.', '')}`;
+  public editorId: string = `ace-editor-${Math.random().toString(16).replace('.', '')}`;
   private editor: any = null;
   private editorValueCache: string = '';
   private onChange: Function;
@@ -19,16 +19,16 @@ export class AceEditorComponent implements ControlValueAccessor, OnInit, OnChang
   private value: string = '';
 
   @Input()
-  private mode: string = 'javascript';
+  public mode: string = 'javascript';
 
   @Input()
-  private theme: string = 'monokai';
+  public theme: string = 'monokai';
 
   @Input()
-  private height: number = 100;
+  public height: number = 100;
 
   @Input()
-  private readonly: boolean = false;
+  public readonly: boolean = false;
 
   constructor(private elementRef: ElementRef) { }
 

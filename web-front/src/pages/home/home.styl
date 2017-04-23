@@ -6,13 +6,16 @@ $no-select-text {
 
 .page-home {
   height: 100%;
+
   .left-sidebar {
     position: relative;
     width: 200px;
     height: 100%;
     background: #f5f5f5;
     border-right: 1px solid $border-color;
-    @extend $no-select-text;
+
+    @extend $no-select-text
+
     .file-tree-toggle {
       position: absolute;
       right: -16px;
@@ -31,6 +34,7 @@ $no-select-text {
       color: #909090;
     }
   }
+
   .drag-line {
     position: absolute;
     top: 0;
@@ -40,6 +44,7 @@ $no-select-text {
     cursor: col-resize;
     z-index: 1;
   }
+
   .right-viewport {
     position: absolute;
     top: 0;
@@ -47,8 +52,10 @@ $no-select-text {
     left: 200px;
     right: 0;
     min-width: 520px;
-    @extend $no-select-text;
+
+    @extend $no-select-text
   }
+
   .note-list {
     position: relative;
     width: 50%;
@@ -56,13 +63,26 @@ $no-select-text {
     border-right: 1px solid $border-color;
     background-color: #fff;
   }
-  .note-view {
+
+  .preview {
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 50%;
+
+    .preview-toolbar {
+      height: 42px;
+      border-bottom: 1px solid #d3d3d3;
+      padding: 0 5px;
+      padding-top: 5px;
+    }
+
+    .preview-container {
+      height: calc(100% - 42px);
+    }
   }
+
   .file-list {
     a.list-group-item {
       padding-left: 30px;

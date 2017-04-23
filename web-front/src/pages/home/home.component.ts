@@ -11,9 +11,14 @@ export class HomeComponent implements OnInit {
 
   private dragEvents: Array<any> = [];
   private subs: Subscription[] = [];
-  private editorValue: string = 'var i = 1;';
-  private editorMode: string = 'javascript';
-  private editorHeight: number = 100;
+  private previewContainer: any = null;
+  private leftSidebarWidth: number = 0;
+
+  public isLeftSidebarMini: boolean = false;
+  public editorValue: string = 'var i = 1;';
+  public editorMode: string = 'javascript';
+  public editorHeight: number = 100;
+  public previewLoading: boolean = false;
 
   constructor(
     private elementRef: ElementRef,
@@ -21,7 +26,8 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.initDragEvents();
+    this.previewContainer = this.util.$('.preview-container', this.elementRef.nativeElement);
+    this._initDragEvents();
     this._initSubscriptions();
     this._setEditorHeight();
   }
@@ -29,6 +35,41 @@ export class HomeComponent implements OnInit {
   ngOnDestroy() {
     this.dragEvents.forEach(item => item.destroy());
     this.subs.forEach((sub: Subscription) => sub.unsubscribe());
+  }
+
+  public menuMiniBtnClick() {
+    let leftSidebar = this.util.$('.left-sidebar', this.elementRef.nativeElement);
+    let rightViewport = this.util.$('.right-viewport', this.elementRef.nativeElement);
+    if (this.isLeftSidebarMini) { // Need expand
+      leftSidebar.style.width = `${this.leftSidebarWidth}px`;
+      rightViewport.style.left = `${this.leftSidebarWidth}px`;
+      this.isLeftSidebarMini = false;
+    } else { // Need collspse
+      this.leftSidebarWidth = parseInt(this.util.getComputedStyle(leftSidebar, 'width'), 10);
+      leftSidebar.style.width = '0px';
+      rightViewport.style.left = '0px';
+      this.isLeftSidebarMini = true;
+    }
+  }
+
+  public runCode() {
+    this.previewLoading = true;
+    let startLoadingTime = Date.now();
+    let iframeHtml = `<iframe id="previewFrame" frameborder="0" style="width: 100%;height: 100%;" border="0" marginwidth="0" marginheight="0" scrolling="yes" allowtransparency="yes"></iframe>`;
+    this.previewContainer.innerHTML = iframeHtml;
+    let iframe = document.getElementById('previewFrame') as any;
+    let fd = iframe.contentDocument;
+    Observable.fromEvent(iframe, 'load')
+      .subscribe(evt => {
+        let timespan = Date.now() - startLoadingTime;
+        setTimeout(() => {
+          this.previewLoading = false;
+        }, timespan > 1000 ? 0 : 1000 - timespan);
+      });
+    fd.open();
+    fd.write('');
+    fd.write(this._buildHtmlCodeForPreview());
+    fd.close();
   }
 
   _initSubscriptions() {
@@ -44,7 +85,16 @@ export class HomeComponent implements OnInit {
     let height = this.util.getComputedStyle(document.querySelector('.note-list') as HTMLElement, 'height');
     this.editorHeight = parseInt(height, 10);
   }
-  private initDragEvents() {
+
+  _buildHtmlCodeForPreview() {
+    let html = this.editorValue;
+    html = html.replace(/<head>/, `<head><script src="/static/vendor/console.mock.js"></script>`)
+      .replace(/<\/head>/, `<style>${''}</style></head>`);
+    html = html.replace(/<\/body>/, `<script>${this.editorValue}</script></body>`);
+    return html;
+  }
+
+  private _initDragEvents() {
     let self = this;
     let leftSidebar = this.elementRef.nativeElement.querySelector('.left-sidebar');
     let rightViewport = this.elementRef.nativeElement.querySelector('.right-viewport');
@@ -67,7 +117,7 @@ export class HomeComponent implements OnInit {
 
     let drag2 = rightViewport.querySelector('.note-list .drag-line');
     let noteList = rightViewport.querySelector('.note-list');
-    let noteView = rightViewport.querySelector('.note-view');
+    let noteView = rightViewport.querySelector('.preview-container');
     // 中间面板拖拽
     dragEvent = this.util.initDrag(drag2, (dragObj: any, e: MouseEvent) => {
       let moveX = e.pageX - dragObj.pageX;
