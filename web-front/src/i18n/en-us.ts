@@ -8,7 +8,7 @@ export default {
     register_label: 'Register'
   },
   home: {
-    file_list: 'File List',
+    template_list: 'Template List',
     run_code: 'Run Code',
     load_preview: 'Preview is loading...'
   }

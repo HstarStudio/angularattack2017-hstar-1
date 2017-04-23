@@ -1,9 +1,12 @@
 import { WdTranslate } from './WdTranslate';
+import { WdAjax } from './WdAjax';
 
 export {
-  WdTranslate
+  WdTranslate,
+  WdAjax
 };
 
 export const SHARED_SERVICES = [
-  WdTranslate
+  WdTranslate,
+  WdAjax
 ];

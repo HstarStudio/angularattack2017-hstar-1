@@ -5,7 +5,6 @@ import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 
 import { SharedModule, SHARED_SERVICES, WdTranslate } from './shared';
-import { COMPONENTS } from './components';
 import { AppComponent, ALL_PAGES } from './pages';
 import { ALL_SERVICES } from './services';
 import { routing } from './app.routing';
@@ -20,7 +19,7 @@ import langObj from './i18n';
     SharedModule,
     routing
   ],
-  declarations: [...COMPONENTS, ...ALL_PAGES],
+  declarations: [...ALL_PAGES],
   providers: [Title, SHARED_SERVICES, ...ALL_SERVICES],
   bootstrap: [AppComponent],
 })

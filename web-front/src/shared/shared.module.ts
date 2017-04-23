@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { TranslateModule } from '@ngx-translate/core';
-
 import { ButtonsModule } from '@progress/kendo-angular-buttons';
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
 import { DialogModule } from '@progress/kendo-angular-dialog';
@@ -25,6 +23,8 @@ const KendoModules = [
   PopupModule
 ];
 
+import { SHARED_COMPONENTS } from './components';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -34,9 +34,10 @@ const KendoModules = [
   exports: [
     CommonModule,
     ...KendoModules,
+    ...SHARED_COMPONENTS,
     TranslateModule
   ],
-  declarations: [],
+  declarations: [...SHARED_COMPONENTS],
   providers: [],
 })
 export class SharedModule {

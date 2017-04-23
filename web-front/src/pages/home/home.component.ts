@@ -1,7 +1,8 @@
 require('./home.styl');
 import { Component, OnInit, ElementRef, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { UtilService } from './../../services';
+import { UtilService, TemplateService } from './../../services';
+import { WdAjax } from './../../shared';
 
 const extTypeMapping = {
   '.js': 'javascript',
@@ -12,7 +13,6 @@ const extTypeMapping = {
 @Component({
   templateUrl: 'home.component.html'
 })
-
 export class HomeComponent implements OnInit {
 
   private dragEvents: Array<any> = [];
@@ -20,17 +20,33 @@ export class HomeComponent implements OnInit {
   private previewContainer: any = null;
   private leftSidebarWidth: number = 0;
   private projectInfo: any = {
+    projectName: '',
+    projectDescription: '',
+    projectTags: [],
     files: {}
   };
+  private wantToTemplate: any = {};
 
+  public currentTemplate: any = {};
   public isLeftSidebarMini: boolean = false;
-  public currentMode: string = 'html';
   public editorHeight: number = 100;
   public previewLoading: boolean = false;
+  public showTemplateChangeDialog = false;
+  public showSaveDialog = false;
+  public templates = [
+    { key: 'normal', text: 'Normal' },
+    { key: 'jquery', text: 'jQuery' },
+    { key: 'angularjs', text: 'AngularJS' },
+    { key: 'vue1', text: 'Vue1' },
+    { key: 'vue2', text: 'Vue2' }
+  ];
+  public tagItems: Array<string> = ['AngularJS', 'Vue1', 'Vue2', 'jQuery', 'CSS', 'HTML5', 'Animation', 'Canvas'];
 
   constructor(
     private elementRef: ElementRef,
-    private util: UtilService
+    private ajax: WdAjax,
+    private util: UtilService,
+    private template: TemplateService
   ) { }
 
   ngOnInit() {
@@ -38,6 +54,7 @@ export class HomeComponent implements OnInit {
     this._initDragEvents();
     this._initSubscriptions();
     this._setEditorHeight();
+    this._initProject();
   }
 
   ngOnDestroy() {
@@ -60,9 +77,19 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  public selectedFileChange(filename: string) {
-    let extName = filename.substring(filename.lastIndexOf('.'));
-    this.currentMode = extTypeMapping[extName];
+  public changeTemplate(template: any) {
+    this.showTemplateChangeDialog = true;
+    this.wantToTemplate = template;
+  }
+
+  public closeTemplateChangeDialog(op?: string) {
+    this.showTemplateChangeDialog = false;
+    if (op === 'onlyTemplate') {
+      this.currentTemplate = this.template.getTemplate(this.wantToTemplate.key);
+    } else if (op === 'all') {
+      this.currentTemplate = this.template.getTemplate(this.wantToTemplate.key);
+      this._setProjectFilesByTemplate(this.currentTemplate);
+    }
   }
 
   public runCode() {
@@ -85,7 +112,26 @@ export class HomeComponent implements OnInit {
     fd.close();
   }
 
-  _initSubscriptions() {
+  public doSaveProject() {
+    if (!this.projectInfo.projectName || this.projectInfo.projectTags.length === 0) {
+      return;
+    }
+    this.ajax.post(`http://localhost:8603/api/v1/auth/autologin`, { username: 'aaaa', password: 'fdsafsd' });
+    this.showSaveDialog = false;
+  }
+
+  private _setProjectFilesByTemplate(template: any) {
+    this.projectInfo.files['index.html'] = template.html;
+    this.projectInfo.files['index.js'] = template.js;
+    this.projectInfo.files['index.css'] = template.css;
+  }
+
+  private _initProject() {
+    this.currentTemplate = this.template.getTemplate('normal');
+    this._setProjectFilesByTemplate(this.currentTemplate);
+  }
+
+  private _initSubscriptions() {
     let sub = Observable.fromEvent(window, 'resize')
       .throttleTime(100)
       .subscribe(evt => {
@@ -102,23 +148,26 @@ export class HomeComponent implements OnInit {
     this.subs.push(sub);
   }
 
-  _saveProject() {
-
+  private _saveProject() {
+    this.showSaveDialog = true;
   }
 
-  _setEditorHeight() {
+  private _setEditorHeight() {
     let height = this.util.getComputedStyle(document.querySelector('.note-list') as HTMLElement, 'height');
     this.editorHeight = parseInt(height, 10) - 42;
-    console.log(this.editorHeight);
   }
 
-  _buildHtmlCodeForPreview() {
+  private _buildHtmlCodeForPreview() {
     let html = this.projectInfo.files['index.html'] || '';
     let js = this.projectInfo.files['index.js'] || '';
     let css = this.projectInfo.files['index.css'] || '';
-    html = html.replace(/<\/head>/, `<style>${css}</style></head>`);
-    html = html.replace(/<\/body>/, `<script>${js}</script></body>`);
-    return html;
+
+    let iframeContent = this.currentTemplate.template
+      .replace('<!--body-->', html)
+      .replace('<!--js-->', `<script>${js}</script>`)
+      .replace('<!--css-->', `<style>${css}</style>`);
+    console.log(iframeContent);
+    return iframeContent;
   }
 
   private _initDragEvents() {
