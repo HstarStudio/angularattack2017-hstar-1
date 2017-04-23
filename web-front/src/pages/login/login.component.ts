@@ -1,4 +1,5 @@
 require('./login.styl');
+declare let AppConf: any;
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { WdAjax, WdEventBus, WdAlert } from './../../shared';

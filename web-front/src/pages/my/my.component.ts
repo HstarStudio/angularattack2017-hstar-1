@@ -1,4 +1,5 @@
 require('./my.styl');
+declare let AppConf: any;
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { WdAjax, WdAlert } from './../../shared';
@@ -9,7 +10,6 @@ import { WdAjax, WdAlert } from './../../shared';
 })
 
 export class MyComponent implements OnInit {
-
 
   public projectList: Array<any> = [];
   public showSaveDialog: boolean = false;

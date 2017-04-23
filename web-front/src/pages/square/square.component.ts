@@ -1,4 +1,5 @@
 require('./square.styl');
+declare let AppConf: any;
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';

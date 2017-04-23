@@ -1,4 +1,5 @@
 require('./home.styl');
+declare let AppConf: any;
 import { Component, OnInit, ElementRef, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';

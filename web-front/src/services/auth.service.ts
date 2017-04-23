@@ -1,3 +1,4 @@
+declare let AppConf: any;
 import { Injectable } from '@angular/core';
 import { WdAjax } from './../shared';
 

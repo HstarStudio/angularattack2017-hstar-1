@@ -15,12 +15,12 @@ npm run vendor
 # Run develop env
 npm run dev
 
-# Run with hot reload
-npm run dev:hot
-
 # Build
 npm run build
 
-# Use webpack for aot compile
+# Run with hot reload (Not work)
+npm run dev:hot
+
+# Use webpack for aot compile (Not work)
 npm run aot:webpack
 ```
