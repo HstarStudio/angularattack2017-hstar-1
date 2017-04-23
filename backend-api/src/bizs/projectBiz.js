@@ -102,7 +102,7 @@ const getProject = (req, res, next) => {
     .catch(next);
 };
 
-const getProjectList = (req, res, next) => {
+const _getProjectList = (req, res, next, userId) => {
   let pageSize = +(req.query.pageSize || 10);
   let pageIndex = +(req.query.pageIndex || 1);
   let q = req.query.q;
@@ -115,6 +115,9 @@ const getProjectList = (req, res, next) => {
       { tags: { $elemMatch: q } }
     ];
   }
+  if (userId) {
+    searchObj.userId = userId;
+  }
   Promise.all([
     db.find(db.collections.projects, searchObj, null, { lastUpdateDate: -1 }, { pageIndex, pageSize }),
     db.count(db.collections.projects, searchObj)
@@ -126,7 +129,19 @@ const getProjectList = (req, res, next) => {
         pageIndex,
         pageSize
       });
-    });
+    })
+    .catch(next);
+}
+
+const getProjectList = (req, res, next) => {
+  _getProjectList(req, res, next);
+};
+
+const getMyProjectList = (req, res, next) => {
+  if (!req.user) {
+    return next(util.bizException('Need user login.'));
+  }
+  _getProjectList(req, res, next, req.user._id);
 };
 
 module.exports = {
@@ -134,5 +149,6 @@ module.exports = {
   updateProject,
   updateProjectFiles,
   getProject,
-  getProjectList
+  getProjectList,
+  getMyProjectList
 };

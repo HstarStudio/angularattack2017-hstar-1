@@ -1,49 +1,56 @@
 <div class="page-login">
   <div class="login-div">
     <div class="panel panel-info">
-      <div class="panel-heading">Login & Register</div>
+      <div class="panel-heading">Welcome to Web Dojo</div>
       <div class="panel-body">
-        <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
-          <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
-          <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
-          <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
-        </ul>
+        <kendo-tabstrip>
+          <kendo-tabstrip-tab [title]="'login.login_label' | translate" [selected]="true">
+            <ng-template kendoTabContent>
+              <br>
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                <input type="text" class="form-control" placeholder="enter username" name="username" [(ngModel)]="loginUser.username" required>
+              </div>
+              <br>
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                <input type="password" class="form-control" placeholder="enter password" name="password" [(ngModel)]="loginUser.password"
+                  required>
+              </div>
 
-        <!-- Tab panes -->
-        <div class="tab-content">
-          <div role="tabpanel" class="tab-pane active" id="home">...</div>
-          <div role="tabpanel" class="tab-pane" id="profile">...</div>
-          <div role="tabpanel" class="tab-pane" id="messages">...</div>
-          <div role="tabpanel" class="tab-pane" id="settings">...</div>
-        </div>
-
+              <div class="checkbox">
+                <label> <input type="checkbox" name="remember" [(ngModel)]="remember"> Remember user name </label>
+              </div>
+              <br>
+              <button kendoButton (click)="doLogin()" [iconClass]="'fa fa-send fa-fw'"> Log in Web Dojo</button>
+            </ng-template>
+          </kendo-tabstrip-tab>
+          <kendo-tabstrip-tab [title]="'login.register_label' | translate">
+            <ng-template kendoTabContent>
+              <br>
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                <input type="text" class="form-control" placeholder="enter username" name="username" [(ngModel)]="registerUser.username"
+                  required>
+              </div>
+              <br>
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                <input type="password" class="form-control" placeholder="enter password" name="password" [(ngModel)]="registerUser.password"
+                  required>
+              </div>
+              <br>
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                <input type="password" class="form-control" placeholder="repeat password" name="password2" [(ngModel)]="registerUser.password2"
+                  required>
+              </div>
+              <br>
+              <button kendoButton (click)="doRegister()" [iconClass]="'fa fa-send fa-fw'"> Register a new account</button>
+            </ng-template>
+          </kendo-tabstrip-tab>
+        </kendo-tabstrip>
       </div>
     </div>
-    <!--<kendo-tabstrip>
-      <kendo-tabstrip-tab [title]="'login.login_label' | translate" [selected]="true">
-        <ng-template kendoTabContent>
-          UserName
-        </ng-template>
-      </kendo-tabstrip-tab>
-      <kendo-tabstrip-tab [title]="'login.register_label' | translate">
-        <ng-template kendoTabContent>
-          <p>
-            The City of New York, often called New York City or simply New York, is the most populous city in the United States. With
-            an estimated 2015 population of 8,550,405 distributed over a land area of just 305 square miles (790 km2), New
-            York City is also the most densely populated major city in the United States. Located at the southern tip of
-            the state of New York, the city is the center of the New York metropolitan area, one of the most populous urban
-            agglomerations in the world.
-          </p>
-          <p>
-            A global power city, New York City exerts a significant impact upon commerce, finance, media, art, fashion, research, technology,
-            education, and entertainment, its fast pace defining the term New York minute. Home to the headquarters of the
-            United Nations, New York is an important center for international diplomacy and has been described as the cultural
-            and financial capital of the world.
-          </p>
-        </ng-template>
-      </kendo-tabstrip-tab>
-    </kendo-tabstrip>-->
   </div>
-
 </div>

@@ -1,6 +1,6 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
+import { AuthGuard } from './services';
 import {
   LayoutComponent, LoginComponent,
   HomeComponent, MyComponent, SquareComponent
@@ -9,11 +9,11 @@ import {
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {
-    path: '', component: LayoutComponent, children: [
+    path: '', component: LayoutComponent, canActivateChild: [AuthGuard], children: [
       { path: '', component: SquareComponent },
       { path: 'new', component: HomeComponent },
       { path: ':user/:project', component: HomeComponent },
-      { path: 'my', component: MyComponent },
+      { path: 'my', component: MyComponent }
     ]
   },
   { path: '**', redirectTo: '' }

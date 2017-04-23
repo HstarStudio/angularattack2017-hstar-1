@@ -4,6 +4,8 @@ import { Http, RequestOptions, Headers, ResponseContentType, Response } from '@a
 @Injectable()
 export class WdAjax {
 
+  private _commonHeader = {};
+
   constructor(private http: Http) { }
 
   _request(type: string, url: string, data: any, options: any): Promise<any> {
@@ -11,10 +13,10 @@ export class WdAjax {
     let requestOpt = new RequestOptions();
     requestOpt.method = type;
     requestOpt.responseType = ResponseContentType.Json;
-    options.headers && (requestOpt.headers = new Headers(options.headers));
     options.params && (requestOpt.params = options.params);
     data && (requestOpt.body = data);
     requestOpt.withCredentials = options.withCredentials === true;
+    requestOpt.headers = new Headers(Object.assign({}, options.headers, this._commonHeader));
     return this.http.request(url, requestOpt).toPromise()
       .then(res => {
         return { res, requestOk: true };
@@ -44,5 +46,9 @@ export class WdAjax {
 
   put(url: string, data?: any, options?: any) {
     return this._request('put', url, data, options);
+  }
+
+  public setCommonHeader(key: string, value: string) {
+    this._commonHeader[key] = value;
   }
 }
