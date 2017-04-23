@@ -3,6 +3,12 @@ import { Component, OnInit, ElementRef, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { UtilService } from './../../services';
 
+const extTypeMapping = {
+  '.js': 'javascript',
+  '.css': 'css',
+  '.html': 'html'
+};
+
 @Component({
   templateUrl: 'home.component.html'
 })
@@ -13,10 +19,12 @@ export class HomeComponent implements OnInit {
   private subs: Subscription[] = [];
   private previewContainer: any = null;
   private leftSidebarWidth: number = 0;
+  private projectInfo: any = {
+    files: {}
+  };
 
   public isLeftSidebarMini: boolean = false;
-  public editorValue: string = 'var i = 1;';
-  public editorMode: string = 'javascript';
+  public currentMode: string = 'html';
   public editorHeight: number = 100;
   public previewLoading: boolean = false;
 
@@ -52,6 +60,11 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  public selectedFileChange(filename: string) {
+    let extName = filename.substring(filename.lastIndexOf('.'));
+    this.currentMode = extTypeMapping[extName];
+  }
+
   public runCode() {
     this.previewLoading = true;
     let startLoadingTime = Date.now();
@@ -79,18 +92,32 @@ export class HomeComponent implements OnInit {
         this._setEditorHeight();
       });
     this.subs.push(sub);
+    sub = Observable.fromEvent(document, 'keydown')
+      .subscribe((evt: KeyboardEvent) => {
+        if (evt.ctrlKey && evt.code === 'KeyS') {
+          evt.preventDefault();
+          this._saveProject();
+        }
+      });
+    this.subs.push(sub);
+  }
+
+  _saveProject() {
+
   }
 
   _setEditorHeight() {
     let height = this.util.getComputedStyle(document.querySelector('.note-list') as HTMLElement, 'height');
-    this.editorHeight = parseInt(height, 10);
+    this.editorHeight = parseInt(height, 10) - 42;
+    console.log(this.editorHeight);
   }
 
   _buildHtmlCodeForPreview() {
-    let html = this.editorValue;
-    html = html.replace(/<head>/, `<head><script src="/static/vendor/console.mock.js"></script>`)
-      .replace(/<\/head>/, `<style>${''}</style></head>`);
-    html = html.replace(/<\/body>/, `<script>${this.editorValue}</script></body>`);
+    let html = this.projectInfo.files['index.html'] || '';
+    let js = this.projectInfo.files['index.js'] || '';
+    let css = this.projectInfo.files['index.css'] || '';
+    html = html.replace(/<\/head>/, `<style>${css}</style></head>`);
+    html = html.replace(/<\/body>/, `<script>${js}</script></body>`);
     return html;
   }
 
@@ -117,7 +144,7 @@ export class HomeComponent implements OnInit {
 
     let drag2 = rightViewport.querySelector('.note-list .drag-line');
     let noteList = rightViewport.querySelector('.note-list');
-    let noteView = rightViewport.querySelector('.preview-container');
+    let noteView = rightViewport.querySelector('.preview');
     // 中间面板拖拽
     dragEvent = this.util.initDrag(drag2, (dragObj: any, e: MouseEvent) => {
       let moveX = e.pageX - dragObj.pageX;

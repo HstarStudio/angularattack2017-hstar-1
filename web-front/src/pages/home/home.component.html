@@ -6,15 +6,31 @@
     <div class="drag-line"></div>
     <div class="list-group file-list">
       <strong class="list-group-item">{{'home.file_list' | translate}}</strong>
-      <a href="#" class="list-group-item">index.js</a>
-      <a href="#" class="list-group-item">index.html</a>
-      <a href="#" class="list-group-item">index.css</a>
+      <a href="#" class="list-group-item" (click)="selectedFileChange('index.js')">index.js</a>
+      <a href="#" class="list-group-item" (click)="selectedFileChange('index.html')">index.html</a>
+      <a href="#" class="list-group-item" (click)="selectedFileChange('index.css')">index.css</a>
     </div>
   </div>
   <div class="right-viewport">
     <div class="note-list">
       <div class="drag-line"></div>
-      <ace-editor name="" [mode]="editorMode" [height]="editorHeight" [(ngModel)]="editorValue"></ace-editor>
+      <kendo-tabstrip [animate]="false" [keepTabContent]="true">
+        <kendo-tabstrip-tab [title]="'index.html'" [selected]="true">
+          <ng-template kendoTabContent>
+            <ace-editor name="" [mode]="'html'" [height]="editorHeight" [(ngModel)]="projectInfo.files['index.html']"></ace-editor>
+          </ng-template>
+        </kendo-tabstrip-tab>
+        <kendo-tabstrip-tab [title]="'index.js'">
+          <ng-template kendoTabContent>
+            <ace-editor name="" [mode]="'javascript'" [height]="editorHeight" [(ngModel)]="projectInfo.files['index.js']"></ace-editor>
+          </ng-template>
+        </kendo-tabstrip-tab>
+        <kendo-tabstrip-tab [title]="'index.css'">
+          <ng-template kendoTabContent>
+            <ace-editor name="" [mode]="'css'" [height]="editorHeight" [(ngModel)]="projectInfo.files['index.css']"></ace-editor>
+          </ng-template>
+        </kendo-tabstrip-tab>
+      </kendo-tabstrip>
     </div>
     <div class="preview">
       <div class="preview-toolbar">

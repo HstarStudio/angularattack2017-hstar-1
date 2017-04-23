@@ -1,3 +1,4 @@
+require('./ace-editor.styl');
 import { Component, OnInit, Input, ElementRef, forwardRef, OnChanges, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -47,7 +48,6 @@ export class AceEditorComponent implements ControlValueAccessor, OnInit, OnChang
     if (changes.readonly) {
       this.editor && this.editor.setReadOnly(this.readonly);
     }
-    console.log(this.height, 'code');
   }
 
   _initAceEditor() {
@@ -70,7 +70,7 @@ export class AceEditorComponent implements ControlValueAccessor, OnInit, OnChang
       name: 'format',
       bindKey: { win: 'Shift-Alt-F', mac: 'Command-Option-F' },
       exec(editor: any) {
-        let val = this._unpacker_filter(editor.getValue());
+        let val = self._unpacker_filter(editor.getValue());
         let formattedVal = self._beautifyCode(val);
         editor.setValue(formattedVal, 1);
       }
