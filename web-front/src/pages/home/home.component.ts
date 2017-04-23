@@ -1,5 +1,6 @@
 require('./home.styl');
 import { Component, OnInit, ElementRef, OnDestroy } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { UtilService, TemplateService } from './../../services';
 import { WdAjax, WdEventBus } from './../../shared';
@@ -44,6 +45,8 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private elementRef: ElementRef,
+    private router: Router,
+    private route: ActivatedRoute,
     private ajax: WdAjax,
     private eventBus: WdEventBus,
     private util: UtilService,
@@ -90,9 +93,11 @@ export class HomeComponent implements OnInit {
     this.showTemplateChangeDialog = false;
     if (op === 'onlyTemplate') {
       this.currentTemplate = this.template.getTemplate(this.wantToTemplate.key);
+      this.runCode();
     } else if (op === 'all') {
       this.currentTemplate = this.template.getTemplate(this.wantToTemplate.key);
       this._setProjectFilesByTemplate(this.currentTemplate);
+      this.runCode();
     }
   }
 
@@ -120,9 +125,10 @@ export class HomeComponent implements OnInit {
     if (!this.projectInfo.projectName || this.projectInfo.projectTags.length === 0) {
       return;
     }
-    this.ajax.post(`${AppConf.apiHost}/project`, this.projectInfo)
+    this.ajax.post(`${AppConf.apiHost}/project`, Object.assign(this.projectInfo, { templateName: this.currentTemplate.name }))
       .then(({ data }) => {
         this.showSaveDialog = false;
+        this.router.navigate([`${data.username}/${data.projectId}`]);
       });
   }
 
@@ -133,8 +139,21 @@ export class HomeComponent implements OnInit {
   }
 
   private _initProject() {
-    this.currentTemplate = this.template.getTemplate('normal');
-    this._setProjectFilesByTemplate(this.currentTemplate);
+    this.route.params.subscribe(params => {
+      console.log(params);
+      if (!params.user) {
+        this.currentTemplate = this.template.getTemplate('normal');
+        this._setProjectFilesByTemplate(this.currentTemplate);
+        this.runCode();
+      } else {
+        this.ajax.get(`${AppConf.apiHost}/project/${params.user}/${params.project}`)
+          .then(({ data }) => {
+            this.currentTemplate = this.template.getTemplate(data.templateName);
+            this.projectInfo = data;
+            this.runCode();
+          });
+      }
+    })
   }
 
   private _initSubscriptions() {
@@ -155,7 +174,20 @@ export class HomeComponent implements OnInit {
   }
 
   private _saveProject() {
+    if (this.projectInfo.projectId) {
+      return this._updateProjectContent();
+    }
     this.showSaveDialog = true;
+  }
+
+  private _updateProjectContent() {
+    this.ajax.put(`${AppConf.apiHost}/project/${this.projectInfo.projectId}/files`, {
+      files: this.projectInfo.files,
+      templateName: this.currentTemplate.name
+    })
+      .then(() => {
+        this.runCode();
+      });
   }
 
   private _setEditorHeight() {

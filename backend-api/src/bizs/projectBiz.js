@@ -3,25 +3,11 @@ const db = require('./../common/db');
 const util = require('./../common/util');
 const projectSchemas = require('./schemas/projectSchemas');
 
-const createProject = (req, res, next) => {
-  let data = req.body;
-  Validator.validate(data, projectSchemas.CREATE_PROJECT_SCHEMA, { allowUnknown: false, abortEarly: false })
-    .then(() => {
-      data.projectId = util.generateShortId();
-      data.createDate = data.lastUpdateDate = Date.now();
-      data.userId = req.user ? req.user._id : ''; // if
-      return db.insert(db.collections.projects, data);
-    })
-    .then(doc => {
-      res.end();
-    })
-    .catch(next);
-};
-
 // Judge user auth
 const _updateProject = (req) => {
   // find the project
   let projectId = req.params.projectId;
+  let data = req.body;
   return db.findOne(db.collections.projects, { projectId })
     .then(doc => {
       if (!doc) {
@@ -37,11 +23,45 @@ const _updateProject = (req) => {
       return doc;
     })
     .then(doc => {
+      if (data.files) {
+        _processProjectFiles(data);
+      }
       let updatedData = {
-        $set: Object.assgin({}, data, { lastUpdateDate: Date.now() })
+        $set: Object.assign({}, data, { lastUpdateDate: Date.now() })
       };
       return db.update(db.collections.projects, { _id: doc._id }, updatedData);
     });
+};
+
+const _processProjectFiles = project => {
+  Object.keys(project.files).forEach(key => {
+    project.files[key.replace('.', '_')] = project.files[key]
+    delete project.files[key];
+  });
+};
+
+const _reverseProcessProjectFiles = project => {
+  Object.keys(project.files).forEach(key => {
+    project.files[key.replace('_', '.')] = project.files[key]
+    delete project.files[key];
+  });
+};
+
+const createProject = (req, res, next) => {
+  let data = req.body;
+  Validator.validate(data, projectSchemas.CREATE_PROJECT_SCHEMA, { allowUnknown: false, abortEarly: false })
+    .then(() => {
+      _processProjectFiles(data);
+      data.projectId = util.generateShortId();
+      data.createDate = data.lastUpdateDate = Date.now();
+      data.userId = req.user ? req.user._id : '';
+      data.username = req.user ? req.user.username : 'anonymous';
+      return db.insert(db.collections.projects, data);
+    })
+    .then(doc => {
+      res.status(201).send(doc);
+    })
+    .catch(next);
 };
 
 const updateProject = (req, res, next) => {
@@ -51,18 +71,33 @@ const updateProject = (req, res, next) => {
       return _updateProject(req);
     })
     .then(() => {
-      res.status(201).end();
+      res.status(202).end();
     })
     .catch(next);
 };
 
 const updateProjectFiles = (req, res, next) => {
+  let data = req.body;
   Validator.validate(data, projectSchemas.UPDATE_PROJECT_FILES_SCHEMA, { allowUnknown: false, abortEarly: false })
     .then(() => {
       return _updateProject(req);
     })
     .then(() => {
-      res.status(201).end();
+      res.status(202).end();
+    })
+    .catch(next);
+};
+
+const getProject = (req, res, next) => {
+  let username = req.params.username;
+  let projectId = req.params.projectId;
+  db.findOne(db.collections.projects, { projectId })
+    .then(project => {
+      if (!project || project.username !== username) {
+        return Promise.reject(util.bizException('Project not exists.'));
+      }
+      _reverseProcessProjectFiles(project);
+      res.send(project);
     })
     .catch(next);
 };
@@ -70,5 +105,6 @@ const updateProjectFiles = (req, res, next) => {
 module.exports = {
   createProject,
   updateProject,
-  updateProjectFiles
+  updateProjectFiles,
+  getProject
 };

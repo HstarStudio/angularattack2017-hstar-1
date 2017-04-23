@@ -2,16 +2,16 @@ const Joi = require('joi');
 
 const project = {
   projectName: Joi.string().required(),
-  projectDescription: Joi.string(),
+  projectDescription: Joi.string().allow(''),
   projectTags: Joi.array().min(1)
 };
 
 const files = {
   templateName: Joi.string().required(),
   files: Joi.object({
-    'index.js': Joi.string(),
-    'index.html': Joi.string(),
-    'index.css': Joi.string()
+    'index.js': Joi.string().allow(''),
+    'index.html': Joi.string().allow(''),
+    'index.css': Joi.string().allow('')
   })
 };
 
